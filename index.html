@@ -1,19 +1,82 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>JAR - Client</title>
+  <link rel="stylesheet" href="./resources/css/style.css">
+  <link rel="stylesheet" href="./resources/css/material.min.css">
+  <link rel="stylesheet" href="./resources/css/materialicon.css">
+
+</head>
+
+<body>
+  <script>
+    var remote = require('electron').remote;
+    var _window = remote.getCurrentWindow();
+  </script>
+  <div class="window">
+    <header class="toolbar toolbar-header">
+      <span class="window-buttons">
+      <span onclick="_window.close()" class="icon icon-record" style="color:#fc605b"></span>
+      </span>
+      <h1 class="title" id="title" style="-webkit-app-region: drag">Loading...</h1>
+    </header>
+
+    <div class="noscroll window-content">
+      <div>
+        <div class="noscroll mdl-layout mdl-js-layout">
+          <!-- <img src="./resources/img/jarclient.png" class="pic"> -->
+          <div class="cardholder">
+
+            <div class="jarpic mdl-card mdl-shadow--2dp">
+            </div>
+
+
+            <div class="demo-card-event mdl-card mdl-shadow--2dp">
+              <div class="mdl-card__title mdl-card--expand ">
+                <div class="messagecard">
+                  
+                <span class="lblconnectto">
+                  Connect to: 
+                </span><span id="ServerName">
+                  {ServerName}
+                </span>
+                <span class="warningmessage">
+                  Allowing will give access to above server to retrieve you machine's performance metrics.
+                    Only allow connecting to trusted servers.
+                    <br/>
+                    Ensure the pattern shown on right matches with the pattern shown on site.
+                  </span>
+                </div>
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+
+                <div class="mdl-layout-spacer"></div>
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                      Yes
+                    </a>
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        No
+                      </a>
+                <div class="mdl-layout-spacer"></div>
+              </div>
+            </div>
+
+
+            
+            <div class="identpic mdl-card mdl-shadow--2dp">
+              </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
 
     <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
     </script>
-  </body>
+  </div>
+  <script src="./resources/js/material.min.js"></script>
+</body>
+
 </html>

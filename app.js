@@ -4,7 +4,6 @@ const electron = require('electron');
 require('electron-debug')({
   enabled: true
 });
-
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
@@ -12,29 +11,52 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
+const clientSyncer = require('./ClientSyncer');
+
+const wsClient = require('./wsClient');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+
 let mainWindow;
 let appIcon = null;
+
+const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+  clientSyncer.Sync(commandLine);
+});
+
+if (isSecondInstance) {
+  app.quit();
+  return;
+}
+
 
 function createTrayIcon() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600
+    width: 931,
+    height: 262,
+    show: false,
+    frame: false,
+    transparent: true,
+    resizable: false
   });
 
+  clientSyncer.Init(wsClient, mainWindow);
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }));
-  
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
 
+  // Open the DevTools.
+  mainWindow.webContents.openDevTools();
+
+  mainWindow.on('close', function (e) {
+    e.preventDefault();
+    mainWindow.hide();
+  });
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -43,36 +65,31 @@ function createTrayIcon() {
     mainWindow = null;
   });
 
-  console.log('defproto'+ app.setAsDefaultProtocolClient('jarx'));
+  console.log('defproto' + app.setAsDefaultProtocolClient('jarclient'));//Keep this commented or uncommented on the type of build
 
-  const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore()
-      mainWindow.focus()
-    }
-  })
-  
-  if (isSecondInstance) {
-    app.quit()
-  }
   const iconName = process.platform === 'win32' ? 'jar-client.ico' : 'jar-client.png';
-  const iconPath = path.join(__dirname, 'resources', iconName);
+  const iconPath = path.join(__dirname, 'resources', 'img', iconName);
   appIcon = new electron.Tray(iconPath);
-  const contextMenu = electron.Menu.buildFromTemplate([{
-    label: 'Exit',
-    click: function () {
-      app.exit();
-    }
-  }, {
-    label: 'Uninstall',
-    click: function () {
-      app.removeAsDefaultProtocolClient('jarx');;
-    }
-  }]);
+  const contextMenu = electron.Menu.buildFromTemplate(
+    [{
+      label: 'Show Confirmation Window',
+      click: function () {
+        mainWindow.show();
+      }
+    }, {
+      label: 'Exit',
+      click: function () {
+        app.exit();
+      }
+    }, {
+      label: 'Uninstall',
+      click: function () {
+        app.removeAsDefaultProtocolClient('jarx');
+      }
+    }]
+  );
   appIcon.setToolTip('JAR - Client');
-  appIcon.setContextMenu(contextMenu)
-
+  appIcon.setContextMenu(contextMenu);
 }
 
 // This method will be called when Electron has finished
@@ -84,9 +101,9 @@ app.on('ready', createTrayIcon);
 app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  // if (process.platform !== 'darwin') {
+  //   app.quit();
+  // }
 });
 
 app.on('activate', function () {
