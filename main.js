@@ -11,9 +11,25 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+/* Single Instance Check */
+var iShouldQuit = app.makeSingleInstance(function (commandLine, workingDirectory) {
+  console.log('makeSingleInstance:'+commandLine);
+  if (mainWindow) {
+    mainWindow.show();
+  }
+  return true;
+});
+if (iShouldQuit) {
+  app.quit();
+  return;
+}
+
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 800, height: 600,
+    frame: false,
+    transparent: true
+  })
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
