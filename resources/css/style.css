@@ -9,6 +9,11 @@ html {
     background-color: transparent !important;
 }
 
+header{
+    -webkit-app-region: drag;
+    height: 30px;
+}
+
 .window {
     border-radius: 6px;
     overflow: hidden;
@@ -29,71 +34,64 @@ html {
 }
 
 h1.title {
-    font-size: 17px;
-    margin: 4px 20px !important;
+    font-size: 16px;
+    margin: 7px 20px !important;
     text-align: left !important;
 }
 
-.pic {
-    height: 200px;
-    width: 200px;
-}
 
-.jarpicholder.mdl-card {
+
+
+.card.mdl-card {
     display: inline-block;
     width: 220px;
     height: 220px;
-    margin: 10px;
 }
 
+
+
 .jarpic {
+    filter: drop-shadow(3px 3px 1px #000);
     width: 200px;
     height: 200px;
     margin: 10px;
     background: url(../img/jarweb.png) no-repeat center / contain;
 }
 
-.demo-card-event.mdl-card {
-    display: inline-block;
-    width: 450px;
-    height: 220px;
-    margin: 10px;
+.messagecard.mdl-card {
+    width: 450px !important;
+    margin: 0px 10px;
 }
 
-.demo-card-event>.mdl-card__actions {
+
+.messagecard>.mdl-card__actions {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-.demo-card-event>.mdl-card__title {
+.messagecard>.mdl-card__title {
     align-items: flex-start;
 }
 
-.demo-card-event>.mdl-card__title>h4 {
+.messagecard>.mdl-card__title>h4 {
     margin-top: 0;
 }
 
-.demo-card-event>.mdl-card__actions {
+.messagecard>.mdl-card__actions {
     display: flex;
     box-sizing: border-box;
     align-items: center;
 }
 
-.demo-card-event>.mdl-card__actions>.material-icons {
+.messagecard>.mdl-card__actions>.material-icons {
     padding-right: 10px;
 }
 
-
-/* .demo-card-event>.mdl-card__title,
-.demo-card-event>.mdl-card__actions,
-.demo-card-event>.mdl-card__actions>.mdl-button {
-    
-} */
-
 .cardholder {
-    display: table-row;
+    display: flex;
+    margin: 10px;
 }
 
-.messagecard {
+.messagecardbody {
     display: grid;
     grid-template-rows: 20px 25px 85px;
     grid-template-columns: 100px 100px 100px;
@@ -108,13 +106,6 @@ h1.title {
     grid-column: 2 / 5;
 }
 
-.identpicholder.mdl-card {
-    display: inline-block;
-    width: 220px;
-    height: 220px;
-    margin: 10px;
-}
-
 .identpic {
     width: 200px;
     height: 200px;
@@ -124,10 +115,8 @@ h1.title {
 
 .noscroll.mdl-layout {
     overflow: hidden;
-    margin: 3px 3px 3px 3px;
 }
 
 .noscroll.window-content {
     overflow: hidden;
-    margin: 3px 3px 3px 3px;
 }

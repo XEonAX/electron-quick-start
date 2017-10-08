@@ -13,23 +13,22 @@
 <body>
   <div class="window">
     <header class=" mdl-color--deep-orange-900 ">
-      <h1 class="title mdl-layout-title mdl-color-text--blue-grey-50" id="title" style="-webkit-app-region: drag">JAR - Client</h1>
+      <h1 class="title mdl-layout-title mdl-color-text--blue-grey-50" id="title">JAR - Client</h1>
     </header>
 
     <div class="noscroll window-content">
       <div>
         <div class="noscroll mdl-layout mdl-js-layout">
-          <!-- <img src="./resources/img/jarclient.png" class="pic"> -->
           <div class="cardholder">
 
-            <div class="jarpicholder mdl-card mdl-shadow--2dp mdl-color--grey-900">
+            <div class="card mdl-card mdl-shadow--2dp mdl-color--grey-900">
               <div class="jarpic"></div>
             </div>
 
 
-            <div class="demo-card-event mdl-card mdl-shadow--2dp mdl-color--indigo-700 mdl-color-text--blue-grey-50">
+            <div class="card messagecard mdl-card mdl-shadow--2dp mdl-color--indigo-700 mdl-color-text--blue-grey-50">
               <div class="mdl-card__title mdl-card--expand ">
-                <div class="messagecard mdl-color-text--blue-grey-50 mdl-typography--body-1-force-preferred-font">
+                <div class="messagecardbody mdl-color-text--blue-grey-50 mdl-typography--body-1-force-preferred-font">
 
                   <span class="lblconnectto">
                   Connect to: 
@@ -37,10 +36,10 @@
                   {ServerName}
                 </span>
                   <span class="warningmessage">
-                  Allowing will give access to above server to retrieve you machine's performance metrics.
+                    Allowing will let the above server retrieve your machine's performance metrics.
                     Only allow connecting to trusted servers.
                     <br/>
-                    Ensure the pattern shown on right matches with the pattern shown on site.
+                    Ensure the pattern shown on right matches with the pattern shown on the site.
                   </span>
                 </div>
               </div>
@@ -51,7 +50,7 @@
                       Yes
                 </button>
                 <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-color-text--blue-grey-50" onclick="SendNo()">
-                        No
+                      No
                 </button>
                 <div class="mdl-layout-spacer"></div>
               </div>
@@ -59,7 +58,7 @@
 
 
 
-            <div class="identpicholder mdl-card mdl-shadow--2dp  mdl-color--teal-500">
+            <div class="card mdl-card mdl-shadow--2dp  mdl-color--teal-500">
               <div class="identpic" id="identidiv"></div>
             </div>
           </div>
@@ -72,7 +71,7 @@
     </script>
   </div>
   <script src="./resources/js/material.min.js"></script>
-  <script src="./resources/js/renderer.js"></script>
+  <script src="./resources/js/ui.js"></script>
 </body>
 
 </html>

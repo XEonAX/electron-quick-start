@@ -22,7 +22,10 @@
   },
   "dependencies": {
     "electron-debug": "^1.4.0",
+    "https-proxy-agent": "^2.1.0",
     "jdenticon": "^1.7.2",
+    "node-notifier": "^5.1.2",
+    "systeminformation": "^3.30.6",
     "ws": "^3.2.0"
   }
 }

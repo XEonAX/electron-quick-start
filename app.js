@@ -13,7 +13,6 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const syncer = require('./syncer');
-const ws = require('./ws');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -39,12 +38,12 @@ function createMainWindowAndTrayIcon() {
 
   console.log('App:CreateMainWindow');
   mainWindow = new BrowserWindow({
-    width: 980,
-    height: 293,
+    width: 940,
+    height: 280,
     show: false,
     frame: false,
     transparent: true,
-    resizable: constants.DebugMode //Resizable in Debug Mode
+    resizable: false //constants.DebugMode //Resizable in Debug Mode
   });
 
   // and load the index.html of the app.
@@ -54,7 +53,7 @@ function createMainWindowAndTrayIcon() {
     slashes: true
   }));
 
-  syncer.Init(ws, mainWindow);
+  syncer.Init(mainWindow);
 
   // Open the DevTools.
   if (constants.DebugMode)
@@ -103,12 +102,12 @@ function createMainWindowAndTrayIcon() {
       }
     }]
   );
-  
+
   console.log('APP:SetContextMenuAndTitle');
   appIcon.setToolTip(constants.Title);
   appIcon.setContextMenu(contextMenu);
 
-  
+
   console.log('APP:AttemptFirstClientInstanceClientSync');
   syncer.Sync(process.argv);
 }
