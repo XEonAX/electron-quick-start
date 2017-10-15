@@ -1,6 +1,12 @@
 'use strict';
 const electron = require('electron');
 const constants = require('./constants');
+const clipboardWatcher = require('electron-clipboard-watcher');
+
+/**
+ * @type {clipboardWatcher}
+ */
+let watcher;
 require('electron-debug')({
   enabled: true
 });
@@ -73,12 +79,7 @@ function createMainWindowAndTrayIcon() {
     mainWindow = null;
   });
   console.log('APP:ProcessExePath:' + process.execPath)
-  if (!constants.DebugMode)
-    console.log('APP:SetProtoHandler:' + constants.Protocol + ':' + app.setAsDefaultProtocolClient(constants.Protocol));
-  else {
-    console.log('APP:ProtoHandlerCMD:' + '"' + path.join(__dirname, 'node_modules', 'electron', 'dist', 'electron.exe') + '" "' + __dirname + '" "%1"');
-    console.log('APP:SetProtoHandler:' + constants.Protocol + ':' + app.setAsDefaultProtocolClient(constants.Protocol, path.join(__dirname, 'node_modules', 'electron', 'dist', 'electron.exe'), [__dirname]));
-  }
+
   const iconName = process.platform === 'win32' ? 'jar-client.ico' : 'jar-client.png';
   const iconPath = path.join(__dirname, 'resources', 'img', iconName);
 
@@ -91,14 +92,31 @@ function createMainWindowAndTrayIcon() {
         mainWindow.show();
       }
     }, {
-      label: 'Exit',
-      click: function () {
-        app.exit();
-      }
-    }, {
       label: 'Uninstall',
       click: function () {
         app.removeAsDefaultProtocolClient(constants.Protocol);
+      }
+    }, {
+      label: 'Monitor Clipboard',
+      click: function (menuitem) {
+        if (menuitem.checked) {
+          watcher = clipboardWatcher({
+            watchDelay: 1000,
+            onTextChange: function (text) {
+              if (text.startsWith(constants.Protocol)) {
+                electron.clipboard.clear();
+                syncer.Sync([text]);
+              }
+            }
+          });
+        } else if (watcher != null)
+          watcher.stop();
+      },
+      type: "checkbox"
+    }, {
+      label: 'Exit',
+      click: function () {
+        app.exit();
       }
     }]
   );
@@ -107,9 +125,24 @@ function createMainWindowAndTrayIcon() {
   appIcon.setToolTip(constants.Title);
   appIcon.setContextMenu(contextMenu);
 
+  let DefaultProtocolHandlerSet;
+  if (!constants.DebugMode) {
+    DefaultProtocolHandlerSet = app.setAsDefaultProtocolClient(constants.Protocol);
+    console.log('APP:SetProtoHandler:' + constants.Protocol + ':' + DefaultProtocolHandlerSet);
+  } else {
+    console.log('APP:ProtoHandlerCMD:' + '"' + path.join(__dirname, 'node_modules', 'electron', 'dist', 'electron.exe') + '" "' + __dirname + '" "%1"');
+    DefaultProtocolHandlerSet = app.setAsDefaultProtocolClient(constants.Protocol, path.join(__dirname, 'node_modules', 'electron', 'dist', 'electron.exe'), [__dirname]);
+    console.log('APP:SetProtoHandler:' + constants.Protocol + ':' + DefaultProtocolHandlerSet);
+  }
+
+  if (!DefaultProtocolHandlerSet)
+    contextMenu.items[2].checked=true;
+
 
   console.log('APP:AttemptFirstClientInstanceClientSync');
-  mainWindow.once('ready-to-show',function (){syncer.Sync(process.argv)});
+  mainWindow.once('ready-to-show', function () {
+    syncer.Sync(process.argv)
+  });
   //setTimeout(syncer.Sync,500,process.argv);
   //syncer.Sync(process.argv);
 }
