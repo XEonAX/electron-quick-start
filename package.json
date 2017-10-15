@@ -5,7 +5,10 @@
   "description": "Java Applet Replacement Client Side Application",
   "main": "app.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "install-app-deps",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "repository": "https://github.com/XEonAX/jar-client/",
   "keywords": [
@@ -15,10 +18,31 @@
     "tutorial",
     "demo"
   ],
-  "author": "Sumant Vanage",
+  "author": {
+    "name": "Sumant Vanage"
+  },
   "license": "MIT",
+  "build": {
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "build/",
+      "category": "Network"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "nsis-web",
+        "portable"
+      ],
+      "icon": "build/icon.ico"
+    }
+  },
   "devDependencies": {
-    "electron": "~1.7.8"
+    "electron": "~1.7.8",
+    "electron-builder": "^19.37.2"
   },
   "dependencies": {
     "electron-debug": "^1.4.0",

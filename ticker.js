@@ -2,7 +2,7 @@
 let si = require('systeminformation');
 let ticker = module.exports = {
     TickInterval: null,
-    Init: function () {
+    Start: function () {
         if (this.TickInterval == null)
             this.TickInterval = setInterval(this.Tick, 1000);
     },
@@ -17,11 +17,11 @@ let ticker = module.exports = {
                 var tickMsg = {
                     action: 'performancetick',
                     CPUTotal: cpudata.currentload,
-                    MemoryAvailable: (memdata.used/memdata.total)*100,
-                    AverageCores: cpudata.avgload,
-                    Cores: cpudata.cpus.map(function (cpu) {
-                        return cpu.load;
-                    })
+                    MemoryUsed: (memdata.used / memdata.total) * 100
+                    // AverageCores: cpudata.avgload,
+                    // Cores: cpudata.cpus.map(function (cpu) {
+                    //     return cpu.load;
+                    // })
                 };
                 let syncer = require('./syncer');
                 syncer.Tick(tickMsg);

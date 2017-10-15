@@ -109,7 +109,9 @@ function createMainWindowAndTrayIcon() {
 
 
   console.log('APP:AttemptFirstClientInstanceClientSync');
-  syncer.Sync(process.argv);
+  mainWindow.once('ready-to-show',function (){syncer.Sync(process.argv)});
+  //setTimeout(syncer.Sync,500,process.argv);
+  //syncer.Sync(process.argv);
 }
 
 // This method will be called when Electron has finished

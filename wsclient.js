@@ -5,8 +5,8 @@ const HttpsProxyAgent = require('https-proxy-agent');
 // let
 var url = require('url');
 var options = url.parse('http://127.0.0.1:8888');
-var secoptions = url.parse('https://127.0.0.1:8888');
-
+var secoptions = url.parse('http://127.0.0.1:8888');
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 var agent = new HttpsProxyAgent(options);
 var secagent = new HttpsProxyAgent(secoptions);
 /**
@@ -25,6 +25,7 @@ const Actions = {
  */
 const Notices = {
     subscribed: 'subscribed',
+    browserconnected: 'browserconnected',
     browserdisconnected: 'browserdisconnected',
     logout: 'logout',
 };
@@ -133,6 +134,9 @@ var wsclient = module.exports = {
                     switch (msg.notice) {
                         case Notices.subscribed:
                             wsclient.Emitter.emit('subscribed', msg.ctoken);
+                            break;
+                        case Notices.browserconnected:
+                            wsclient.Emitter.emit('browserconnected', msg.ctoken);
                             break;
                         case Notices.browserdisconnected:
                             wsclient.Emitter.emit('browserdisconnected', msg.ctoken);

@@ -36,7 +36,8 @@ var syncer = module.exports = {
         mainWindow = _mainWindow;
         wscx.Emitter.on('connect', this.Handlers.OnConnect);
         wscx.Emitter.on('disconnect', this.Handlers.OnDisconnect);
-        wscx.Emitter.on('browserdisconnected', this.Handlers.OnBrowserdisconnected);
+        wscx.Emitter.on('browserdisconnected', this.Handlers.OnBrowserDisconnected);
+        wscx.Emitter.on('browserconnected', this.Handlers.OnBrowserConnected);
         wscx.Emitter.on('subscribed', this.Handlers.OnSubscribed);
         wscx.Emitter.on('logout', this.Handlers.OnLogout);
     },
@@ -48,6 +49,7 @@ var syncer = module.exports = {
     Sync: function Sync(commandLine) {
         console.log('Syncer:Sync:' + commandLine);
         let protostr = commandLine[commandLine.length - 1];
+        mainWindow.webContents.executeJavaScript('console.log("protostr:' + protostr + '");');
         if (!protostr.startsWith('jarclient://'))
             return;
         try {
@@ -70,7 +72,7 @@ var syncer = module.exports = {
             if (!mainWindow.isVisible()) {
                 mainWindow.webContents.send("UpdateUI", {
                     hostname: wsurl.hostname,
-                    identsvg: jdenticon.toSvg(wsurl.href, 200, 0.1),
+                    identsvg: jdenticon.toSvg(wsurl.href, 200, 0),
                     wsHost: wsHostUrl,
                     wsToken: wsToken
                 });
@@ -113,7 +115,7 @@ var syncer = module.exports = {
                 icon: path.join(__dirname, 'resources', 'img', 'jar-client.png'), // Absolute path (doesn't work on balloons)
                 sound: false, // Only Notification Center or Windows Toasters
                 wait: false // Wait with callback, until user action is taken against notification
-              });
+            });
             for (var ctoken in syncer.Rooms) {
                 if (syncer.Rooms.hasOwnProperty(ctoken)) {
                     var room = syncer.Rooms[ctoken];
@@ -131,7 +133,7 @@ var syncer = module.exports = {
                 icon: path.join(__dirname, 'resources', 'img', 'jar-client.png'), // Absolute path (doesn't work on balloons)
                 sound: false, // Only Notification Center or Windows Toasters
                 wait: false // Wait with callback, until user action is taken against notification
-              });
+            });
             for (var ctoken in syncer.Rooms) {
                 if (syncer.Rooms.hasOwnProperty(ctoken)) {
                     var room = syncer.Rooms[ctoken];
@@ -143,7 +145,7 @@ var syncer = module.exports = {
             for (var _ctoken in syncer.Rooms) {
                 if (syncer.Rooms.hasOwnProperty(_ctoken)) {
                     var _room = syncer.Rooms[_ctoken];
-                    if (_room.state == RoomStates.subscribed){
+                    if (_room.state == RoomStates.subscribed) {
                         pauseTicker = false;
                         break;
                     }
@@ -153,14 +155,18 @@ var syncer = module.exports = {
                 ticker.Pause();
             }
         },
-        OnBrowserdisconnected: function (ctoken) {
+        OnBrowserConnected: function (ctoken) {
+            syncer.Rooms[ctoken].state = RoomStates.subscribed;
+            ticker.Pause();
+        },
+        OnBrowserDisconnected: function (ctoken) {
             syncer.Rooms[ctoken].state = RoomStates.disconnected;
 
             var pauseTicker = true;
             for (var _ctoken in syncer.Rooms) {
                 if (syncer.Rooms.hasOwnProperty(_ctoken)) {
                     var _room = syncer.Rooms[_ctoken];
-                    if (_room.state == RoomStates.subscribed){
+                    if (_room.state == RoomStates.subscribed) {
                         pauseTicker = false;
                         break;
                     }
@@ -177,7 +183,7 @@ var syncer = module.exports = {
             for (var _ctoken in syncer.Rooms) {
                 if (syncer.Rooms.hasOwnProperty(_ctoken)) {
                     var _room = syncer.Rooms[_ctoken];
-                    if (_room.state == RoomStates.subscribed){
+                    if (_room.state == RoomStates.subscribed) {
                         pauseTicker = false;
                         break;
                     }
@@ -190,14 +196,14 @@ var syncer = module.exports = {
         OnSubscribed: function (ctoken) {
             if (syncer.Rooms[ctoken] != null && syncer.Rooms[ctoken].state == RoomStates.subscribing) {
                 syncer.Rooms[ctoken].state = RoomStates.subscribed;
-                ticker.Init();
+                ticker.Start();
                 notifier.notify({
                     title: constants.Title,
                     message: 'Subscribed to ' + syncer.Rooms[ctoken].url,
                     icon: path.join(__dirname, 'resources', 'img', 'jar-client.png'), // Absolute path (doesn't work on balloons)
                     sound: false, // Only Notification Center or Windows Toasters
                     wait: false // Wait with callback, until user action is taken against notification
-                  });
+                });
             }
         },
 
