@@ -157,7 +157,7 @@ var syncer = module.exports = {
         },
         OnBrowserConnected: function (ctoken) {
             syncer.Rooms[ctoken].state = RoomStates.subscribed;
-            ticker.Pause();
+            ticker.Start();
         },
         OnBrowserDisconnected: function (ctoken) {
             syncer.Rooms[ctoken].state = RoomStates.disconnected;
