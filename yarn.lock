@@ -504,6 +504,10 @@ electron-builder@^19.37.2:
     update-notifier "^2.3.0"
     yargs "^9.0.1"
 
+electron-clipboard-watcher@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/electron-clipboard-watcher/-/electron-clipboard-watcher-1.0.1.tgz#5fc2d8e2bbfd7341f1f2c3c5315abd3d6a6f2f56"
+
 electron-debug@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/electron-debug/-/electron-debug-1.4.0.tgz#bec7005522220a9d0622153352e1bbff0f37af2e"

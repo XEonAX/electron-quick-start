@@ -86,31 +86,34 @@ function createMainWindowAndTrayIcon() {
   console.log('APP:CreateTray');
   appIcon = new electron.Tray(iconPath);
   const contextMenu = electron.Menu.buildFromTemplate(
-    [{
-      label: 'Show Confirmation Window',
-      click: function () {
-        mainWindow.show();
+    [
+      // {
+      //   label: 'Show Confirmation Window',
+      //   click: function () {
+      //     mainWindow.show();
+      //   }
+      // },
+      {
+        label: 'Uninstall',
+        click: function () {
+          app.removeAsDefaultProtocolClient(constants.Protocol);
+        }
+      }, {
+        label: 'Monitor Clipboard',
+        click: function (menuitem) {
+          if (menuitem.checked) {
+            StartWatcher();
+          } else if (watcher != null)
+            watcher.stop();
+        },
+        type: "checkbox"
+      }, {
+        label: 'Exit',
+        click: function () {
+          app.exit();
+        }
       }
-    }, {
-      label: 'Uninstall',
-      click: function () {
-        app.removeAsDefaultProtocolClient(constants.Protocol);
-      }
-    }, {
-      label: 'Monitor Clipboard',
-      click: function (menuitem) {
-        if (menuitem.checked) {
-          StartWatcher();
-        } else if (watcher != null)
-          watcher.stop();
-      },
-      type: "checkbox"
-    }, {
-      label: 'Exit',
-      click: function () {
-        app.exit();
-      }
-    }]
+    ]
   );
 
   console.log('APP:SetContextMenuAndTitle');
