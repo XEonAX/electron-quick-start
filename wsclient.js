@@ -4,11 +4,11 @@ const WebSocket = require('ws')
 const HttpsProxyAgent = require('https-proxy-agent');
 // let
 var url = require('url');
-var options = url.parse('http://127.0.0.1:8888');
-var secoptions = url.parse('http://127.0.0.1:8888');
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-var agent = new HttpsProxyAgent(options);
-var secagent = new HttpsProxyAgent(secoptions);
+// var options = url.parse('http://127.0.0.1:8888');
+// var secoptions = url.parse('http://127.0.0.1:8888');
+// process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+// var agent = new HttpsProxyAgent(options);
+// var secagent = new HttpsProxyAgent(secoptions);
 /**
  * Enum for msg action values.
  * @readonly
@@ -50,11 +50,12 @@ var wsclient = module.exports = {
             this.Emitter.emit('connect', url);
         } else {
             console.log('WSCLIENT:Connect:New connection to create:' + url);
-            var ws = new WebSocket(url, url.startsWith('wss') ? {
-                agent: secagent
-            } : {
-                agent: agent
-            });
+            var ws = new WebSocket(url);
+            // , url.startsWith('wss') ? {
+            //     agent: secagent
+            // } : {
+            //     agent: agent
+            // });
             ws.addEventListener('open', this.Handlers.OnOpen);
             ws.addEventListener('close', this.Handlers.OnClose);
             ws.addEventListener('message', this.Handlers.OnMessage);

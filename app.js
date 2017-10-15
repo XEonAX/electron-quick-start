@@ -100,15 +100,7 @@ function createMainWindowAndTrayIcon() {
       label: 'Monitor Clipboard',
       click: function (menuitem) {
         if (menuitem.checked) {
-          watcher = clipboardWatcher({
-            watchDelay: 1000,
-            onTextChange: function (text) {
-              if (text.startsWith(constants.Protocol)) {
-                electron.clipboard.clear();
-                syncer.Sync([text]);
-              }
-            }
-          });
+          StartWatcher();
         } else if (watcher != null)
           watcher.stop();
       },
@@ -135,9 +127,10 @@ function createMainWindowAndTrayIcon() {
     console.log('APP:SetProtoHandler:' + constants.Protocol + ':' + DefaultProtocolHandlerSet);
   }
 
-  if (!DefaultProtocolHandlerSet)
-    contextMenu.items[2].checked=true;
-
+  if (!DefaultProtocolHandlerSet) {
+    contextMenu.items[2].checked = true;
+    StartWatcher();
+  }
 
   console.log('APP:AttemptFirstClientInstanceClientSync');
   mainWindow.once('ready-to-show', function () {
@@ -160,5 +153,19 @@ app.on('activate', function () {
   }
 });
 
+
+function StartWatcher() {
+  console.log('APP:clipboardWatcher:Start');
+  watcher = clipboardWatcher({
+    watchDelay: 1000,
+    onTextChange: function (text) {
+      if (text.startsWith(constants.Protocol)) {
+        console.log('APP:clipboardWatcher:textStartWithProto' + text);
+        electron.clipboard.clear();
+        syncer.Sync([text]);
+      }
+    }
+  });
+}
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
