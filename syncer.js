@@ -72,7 +72,7 @@ var syncer = module.exports = {
             if (!mainWindow.isVisible()) {
                 mainWindow.webContents.send("UpdateUI", {
                     hostname: wsurl.hostname,
-                    identsvg: jdenticon.toSvg(wsurl.href, 200, 0),
+                    identsvg: jdenticon.toSvg(wsurl.href+ constants.PreSharedSecret, 200, 0),
                     wsHost: wsHostUrl,
                     wsToken: wsToken
                 });

@@ -6,15 +6,15 @@ module.exports = {
     /**
      * Primary Color from Material Palette.
      * @return {string}
-     */  
+     */
     PrimaryColor: 'blue_grey',
-    
+
     /**
      * Secondary Color from Material Palette.
      * @return {string}
      */
     SecondaryColor: 'indigo',
-    
+
     /**
      * Page Title to use.
      * @return {string}
@@ -25,12 +25,16 @@ module.exports = {
      * Protocol To Handle
      * @return {string}
      */
-    Protocol:'jarclient',
+    Protocol: 'jarclient',
 
     /**
      * Running as in Debug mode, or as a packaged application
      * @return {boolean}
      */
-    DebugMode: (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath))
+    DebugMode: (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)),
 
+    /**
+     * Pre-Shared secret to create Identicon
+     */
+    PreSharedSecret: '🔒🔑'
 };
