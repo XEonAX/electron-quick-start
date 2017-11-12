@@ -1,7 +1,7 @@
 {
-  "name": "jar-client",
-  "productName": "jar-client",
-  "version": "1.0.0",
+  "name": "jar-client-x",
+  "productName": "jar-client-x",
+  "version": "1.0.1",
   "description": "Java Applet Replacement Client Side Application",
   "main": "app.js",
   "scripts": {
