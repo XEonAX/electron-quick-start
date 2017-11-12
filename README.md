@@ -25,3 +25,6 @@ For e.g. This application sends Performance metrics of your machine when connect
 2. Ensure you have executed `npm install` atleast once. If not you can run the same via VSCode's integrated terminal.
 3. Press `F5` to start debugging. Enjoy!!!
 
+## Screenshot
+ - Connection Confirmation Dialog
+ ![jar-client-x](https://user-images.githubusercontent.com/15712061/32700424-1159383e-c7eb-11e7-9644-e965b33472dc.png)
